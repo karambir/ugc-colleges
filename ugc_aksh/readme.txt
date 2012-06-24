@@ -8,3 +8,6 @@ There are two files in this folder:
 an html doc of ugc website hving list of colleges with names starting with 'A'.
 I downloaded it to test.
 Another is a txt file by the name text.txt..in which my script writes the colleges' names
+
+
+p.s hope it helps
