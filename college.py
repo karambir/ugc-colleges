@@ -1,6 +1,7 @@
 import urllib2
 import sys
 import re
+import MySQLdb
 
 """Script to find names of colleges from ugc website
 and print them
@@ -31,18 +32,36 @@ def find_colleges(text):
     #text = f.read()
 
     tuples =re.findall(r'<tr><td valign=top ><ul><li> <font color=#006699>([\w\s%.,(&:)\'\-]+)</font> ([\w.,:()\-\s]+)<b>Yr Estd.:</b> (\d+) <b>Status:</b> ([\w\s()&]+) </ul></td></tr>', text)
+
+    db = MySQLdb.connect(user='root',
+            db='amity',
+            passwd='myarmy66',
+            host='localhost')
+    cursor=db.cursor()
+   # cursor.execute("""
+    #create table if not exists collegemock
+    #(
+    #id integer(5) auto_increment primary key,
+    #name varchar(160) not null,
+    #address varchar(200),
+    #estd year,
+    #section varchar(40)
+    #)
+    #""")
     #print len(tuples)
     for college in tuples:
-        try:
-            logfile = open('colleges.txt', 'a')
-            try:
-                logfile.write(','.join(map(str,college))+'\n')
-            finally:
-                logfile.close()
-        except IOError:
-            pass
-
-        #print college
+       # try:
+            #logfile = open('colleges.txt', 'a')
+            #try:
+                #logfile.write(','.join(map(str,college))+'\n')
+            #finally:
+                #logfile.close()
+        #except IOError:
+            #pass
+        #print type(int(college[2]))
+        cursor.execute("INSERT INTO collegemock (name, address, estd, section) VALUES (%s, %s, %d, %s)" %(college[0],college[1], int(college[2]), college[3]))
+    db.close()
+       #print college
     print len(tuples)
 
 def main():
@@ -55,7 +74,7 @@ def main():
         #print 'usage: filename'
         #sys.exit(1)
     html = ''
-    for num in range(1,82):
+    for num in range(2,3):
         link = 'http://www.ugc.ac.in/inside/reco_college_search.php?resultpage='+str(num)+'&search=%'
         response = urllib2.urlopen(link)
         html += response.read()
