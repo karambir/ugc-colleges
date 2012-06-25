@@ -49,6 +49,7 @@ def find_colleges(text):
     #)
     #""")
     #print len(tuples)
+    q_insert = "insert into collegelist (name, address) values (%s, %s)"
     for college in tuples:
        # try:
             #logfile = open('colleges.txt', 'a')
@@ -58,8 +59,8 @@ def find_colleges(text):
                 #logfile.close()
         #except IOError:
             #pass
-        #print type(int(college[2]))
-        cursor.execute("INSERT INTO collegemock (name, address, estd, section) VALUES (%s, %s, %d, %s)" %(college[0],college[1], int(college[2]), college[3]))
+        cursor.execute(q_insert, (college[0], college[1]))
+        db.commit()
     db.close()
        #print college
     print len(tuples)
@@ -74,7 +75,7 @@ def main():
         #print 'usage: filename'
         #sys.exit(1)
     html = ''
-    for num in range(2,3):
+    for num in range(1,82):
         link = 'http://www.ugc.ac.in/inside/reco_college_search.php?resultpage='+str(num)+'&search=%'
         response = urllib2.urlopen(link)
         html += response.read()
