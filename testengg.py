@@ -47,6 +47,14 @@ for num in range(10):
     print cadd
     cnames[num].append(cadd)
 
+    
+    #search for year of estd.
+    estdstart = html.find('Established in')
+    estdend = html.find('<', estdstart+19)
+    cestd = html[estdstart+22:estdend]
+    print cestd
+    cnames[num].append(int(cestd))
+    
     html = html[nameend:]
 
 
