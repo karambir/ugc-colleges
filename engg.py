@@ -3,22 +3,17 @@ import sys
 import re
 import MySQLdb
 
-"""Script to find names of colleges from ugc website
+"""Script to find names of colleges from indiacollegesearch.com website
 and print them
 
-<tr><td valign=top ><ul><li> <font color=#006699>A. Veeriya Vendayar Memorial, Sri Pushpam College</font> POONDI. DIST.:Thanjavur TAMIL NADU-613   <b>Yr Estd.:</b> 1956 <b>Status:</b> 2(f)&12(B)
- </ul></td></tr>
 
+<div class="marginBottom7">
+    <h2 ><a style="text-decoration:underline;" href="http://indiacollegesearch.com/colleges/Indian_Institute_of_Technology_(IIT)_Delhi"  target="_blank" onclick="return go_to_college_profile('middle_results_form', 1028,'Indian Institute of Technology (IIT) Delhi');">Indian Institute of Technology (IIT) Delhi</a></h2>
+</div>
 
-
-
-<tr><td valign=top ><ul><li> <font color=#006699>A.B.M. College, SINGHBHUM.</font> DIST.:Purbi Singhbhum Jharkhand    <b>Yr Estd.:</b> 1981 <b>Status:</b> 2(f)&12(B)
- </ul></td></tr>
-
-
-
-
-<tr><td valign=top ><ul><li> <font color=#006699>A.B.M. Degree College, </font> Ongole Distt.: Prakasam Andhra Pradesh   <b>Yr Estd.:</b> 1981 <b>Status:</b> 2(f)&12(B) </ul></td></tr>
+<div class="marginBottom7">
+    <h2 ><a style="text-decoration:underline;" href="http://indiacollegesearch.com/colleges/Indian_Institute_of_Technology_(IIT)_Bombay"  target="_blank" onclick="return go_to_college_profile('middle_results_form', 1027,'Indian Institute of Technology (IIT) Bombay');">Indian Institute of Technology (IIT) Bombay</a></h2>
+</div>
 
 """
 
@@ -72,8 +67,8 @@ def main():
     """
 
     html = ''
-    for num in range(1,82):
-        link = 'http://oldwebsite.ugc.ac.in/inside/reco_college_search.php?resultpage='+str(num)+'&search=%'
+    for num in range(1,414):
+        link = 'http://www.indiacollegesearch.com/colleges-india?page='+str(num)
         response = urllib2.urlopen(link)
         html += response.read()
     find_colleges(html)  #To call find colleges function and write them in database or file
