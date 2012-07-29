@@ -17,61 +17,61 @@ and print them
 
 """
 
-def find_colleges(text):
+def find_colleges(html):
     """Given a string, reads and return a list of college names from it
     """
 
-    colleges = []
+    cnames = [[],[],[],[],[],[],[],[],[],[]]
+    for num in range(10):
+        nametip =  html.find('<a style="text-decoration:underline;"')
+        namestart = html.find(';">', nametip)
+        nameend = html.find('</a>', namestart)
+        cname = html[namestart+3:nameend]
+        #print cname
+        cnames[num].append(cname)
+        
+        #now search for college address
+        addstart = html.find('location.png"')
+        addend = html.find(' <span class="bold" style="color:#686868;"></span>', addstart)
+        cadd = html[addstart+16:addend]
+        #print cadd
+        cnames[num].append(cadd)
 
-   
-    tuples =re.findall(r'<tr><td valign=top ><ul><li> <font color=#006699>([\w\s%.,(&:)\'\-]+)</font> ([\w.,:()\-\s]+)<b>Yr Estd.:</b> (\d+) <b>Status:</b> ([\w\s()&]+) </ul></td></tr>', text)
+        html = html[nameend:]
+
 
     db = MySQLdb.connect(user='root',
             db='amity',
             passwd='myarmy66',
             host='localhost')
     cursor=db.cursor()
-    cursor.execute("""
-    create table if not exists colleglist
-    (
-    id integer(5) auto_increment primary key,
-    name varchar(160) not null,
-    address varchar(200),
-    estd year,
-    section varchar(40)
-    )
-    """)
+    #cursor.execute("""
+    #create table if not exists enggcollege
+    #(
+    #id integer(5) auto_increment primary key,
+    #name varchar(360) not null,
+    #address varchar(200),
+    #estd year,
+    #section varchar(40)
+    #)
+    #""")
 
-    q_insert = "insert into collegelist (name, address) values (%s, %s)"
-    for college in tuples:
-    
-       #To write in a file
-       """
-       try:
-            logfile = open('colleges.txt', 'a')
-            try:
-                logfile.write(','.join(map(str,college))+'\n')
-            finally:
-                logfile.close()
-        except IOError:
-            pass
-        """
-        #To write in a database
+    q_insert = "insert into enggcollege (name, address) values (%s, %s)"
+    for college in cnames:
         cursor.execute(q_insert, (college[0], college[1]))
         db.commit()
     db.close()
-    print len(tuples)  #To verify number of college names captured
+
 
 def main():
     """call find_college function to get a list of colleges and then it prints them
     """
 
-    html = ''
-    for num in range(1,414):
+    for num in range(415,416):
         link = 'http://www.indiacollegesearch.com/colleges-india?page='+str(num)
         response = urllib2.urlopen(link)
-        html += response.read()
-    find_colleges(html)  #To call find colleges function and write them in database or file
+        print "Retrieving Page - " + str(num)
+        find_colleges(response.read())  #To call find colleges function and write them in database or file
 
 
 
