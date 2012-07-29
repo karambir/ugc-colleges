@@ -1,6 +1,11 @@
 import sys
 import re
-import MySQLdb
+
+"""
+This file is tested with test-page3.html
+
+"""
+
 
 """Key for searching:
 
@@ -20,22 +25,23 @@ Stop at               <span
 
 """
 
+cname='some'
+
+f = open(sys.argv[1] , 'rU')
+html = str(f.read())
+f.close()
+
+cnames = []
+for num in range(10):
+    nametip =  html.find('<a style="text-decoration:underline;"')
+    namestart = html.find(';">', nametip)
+    nameend = html.find('</a>', namestart)
+    cname = html[namestart+3:nameend]
+    cnames.append(cname)
+    html = html[nameend:]
+
+for cname in cnames:    
+    print cname
 
 
-def getData(filename):
-    """Function which opens the file from which college names are to be extracted, extracts all the college names and stores them in a file named 'text.txt'.Then it calls another function enterData() for inserting data into database"""
 
-    f = open(filename , 'rU')
-    data = f.read()
-    print data
-    
-    f.close()
-
-
-
-def main():
-    getData(sys.argv[1])
-
-
-if __name__ == '__main__':
-    main()
