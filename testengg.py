@@ -19,7 +19,7 @@ Stop at                </a>
 
 for college address:
 
-search for            coll_location.png" />
+search for            location.png" />
 after that s college location
 Stop at               <span
 
@@ -31,14 +31,24 @@ f = open(sys.argv[1] , 'rU')
 html = str(f.read())
 f.close()
 
-cnames = []
+cnames = [[],[],[],[],[],[],[],[],[],[]]
 for num in range(10):
     nametip =  html.find('<a style="text-decoration:underline;"')
     namestart = html.find(';">', nametip)
     nameend = html.find('</a>', namestart)
     cname = html[namestart+3:nameend]
-    cnames.append(cname)
+    print cname
+    cnames[num].append(cname)
+    
+    #now search for college address
+    addstart = html.find('location.png"')
+    addend = html.find(' <span class="bold" style="color:#686868;"></span>', addstart)
+    cadd = html[addstart+14:addend]
+    print cadd
+    cnames[num].append(cadd)
+
     html = html[nameend:]
+
 
 for cname in cnames:    
     print cname
